@@ -14,23 +14,6 @@ export class App extends Component {
     filter: '',
   };
 
-  // addContact = ({ name, number }) => {
-  //   if (
-  //     this.state.contacts.find(
-  //       contact => contact.name.toLowerCase() === name.toLowerCase()
-  //     )
-  //   ) {
-  //     alert(`${name} is already in contacts`);
-  //   } else {
-  //     this.setState(prev => ({
-  //       contacts: [
-  //         ...prev.contacts,
-  //         { id: nextId(), name: name, number: number },
-  //       ],
-  //     }));
-  //   }
-  // };
-
   onSubmitForm = ({ name, number }) => {
     const newState = { id: Date.now(), name: name, number: number };
     let someName = this.state.contacts.some(
@@ -49,6 +32,13 @@ export class App extends Component {
     this.setState({ filter: e.target.value });
   };
 
+  filterContact = () => {
+    const { contacts, filter } = this.state;
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase().trim())
+    );
+  };
+
   deleteContact = id => {
     this.setState(prev => ({
       contacts: prev.contacts.filter(contact => contact.id !== id),
@@ -57,25 +47,26 @@ export class App extends Component {
 
   render() {
     return (
-      // <div
-      // // style={{
-      // //   height: '100vh',
-      // //   display: 'flex',
-      // //   justifyContent: 'center',
-      // //   alignItems: 'center',
-      // //   fontSize: 40,
-      // //   color: '#010101',
-      // // }}
-      // >
-      <div>
-        <h1>Phonebook</h1>
-        <ContactForm onSubmit={this.onSubmitForm} />
+      <div
+        style={{
+          height: '100vh',
+          margin: '10px',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: 15,
+          color: '#010101',
+        }}
+      >
+        <div>
+          <h1>Phonebook</h1>
+          <ContactForm onSubmit={this.onSubmitForm} />
+        </div>
 
         <h2>Contacts</h2>
         <Filter addFilter={this.addFilter} />
         <ContactList
-          contacts={this.state.contacts}
           deleteContact={this.deleteContact}
+          contactList={this.filterContact}
         />
       </div>
     );
